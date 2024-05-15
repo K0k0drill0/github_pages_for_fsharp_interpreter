@@ -60,7 +60,6 @@
       <li>Обработка математических выражений в инфиксной нотации</li>
       <li>Примитивные типы: Void, Int, Float, Bool, Char, String</li>
       <li>Списочный тип List</li>
-      <li>Файловый тип File</li>
       <li>Библиотека обработки строк</li>
       <li>Библиотека обработки списков</li>
       <li>Библиотека ввода-вывода</li>
@@ -102,14 +101,14 @@
     <li>Символьный (Char)</li>
     <li>Строковый (String)</li>
     <li>Списочный (List)</li>
-    <li>Файловый (File)</li>
+    <li>Функциональный (Lambda)</li>
   </ul>
 
   <h3>Математическое выражение</h3>
   <p>
-    Математические выражения могут содержать константы всех типов (кроме void),
+    Математические выражения могут содержать константы всех типов,
     операции над ними, лямбда-функции, псевдонимы других выражений, а также вызовы
-    библиотечных функций. В математических выражениях не предусмотрено неявное приведение типов.
+    библиотечных функций.
   </p>
 
   <h3>
@@ -238,6 +237,16 @@ in fun outer2 -> {
   </code></pre></pre>
   <p>Результат выражения - 30.</p>
   
+  <h3>Списки</h3>
+  <p>
+    Список &mdash; структура данных, состоящая из головы и хвоста.
+    Головой является некоторый элемент, а хвостом &ndash; другой,
+    возможно пустой, список. 
+  </p>
+
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">[e1, e2, ..., en]</code></pre>
+  
   <h3>Библиотеки</h3>
   <ul>
     <li>
@@ -320,6 +329,21 @@ in fun outer2 -> {
                     <td><pre><code data-language="fsharp">List -> List</code></pre></td>
                     <td>Хвост списка.</td>
                 </tr>
+                <tr>
+                    <td><pre><code data-language="fsharp">IsEmpty</code></pre></td>
+                    <td><pre><code data-language="fsharp">List -> Bool</code></pre></td>
+                    <td>Пуст ли список.</td>
+                </tr>
+                <tr>
+                    <td><pre><code data-language="fsharp">Iter</code></pre></td>
+                    <td><pre><code data-language="fsharp">(Lambda: T -> Void), List -> Void</code></pre></td>
+                    <td>Выполняет лямбда-функцию типа T -> void для каждого элемента списка.</td>
+                </tr>
+                <tr>
+                    <td><pre><code data-language="fsharp">Map</code></pre></td>
+                    <td><pre><code data-language="fsharp">(Lambda: T -> T'), List -> List</code></pre></td>
+                    <td>Строит новый список с помощью лямбда-функции типа T -> T', применяя её к каждому значению исходного списка.</td>
+                </tr>
             </tbody>
         </table>
       <p>Примеры использования методов строк:</p>
@@ -350,19 +374,9 @@ in fun outer2 -> {
             <td>Вывод в консоль.</td>
           </tr>
           <tr>
-            <td><pre><code data-language="fsharp">OpenReadFile</code></pre></td>
-            <td><pre><code data-language="fsharp">String(path) -> File</code></pre></td>
-            <td>Открыть файл для чтения.</td>
-          </tr>
-          <tr>
-            <td><pre><code data-language="fsharp">CloseReadFile</code></pre></td>
-            <td><pre><code data-language="fsharp">File -> Void</code></pre></td>
-            <td>Закрыть файл, открытый на чтение.</td>
-          </tr>
-          <tr>
-            <td><pre><code data-language="fsharp">ReadFileLine</code></pre></td>
-            <td><pre><code data-language="fsharp">File -> String</code></pre></td>
-            <td>Прочитать строку файла.</td>
+            <td><pre><code data-language="fsharp">ReadFileLines</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path) -> List</code></pre></td>
+            <td>Считывает файл и возвращает список его строк.</td>
           </tr>
           <tr>
             <td><pre><code data-language="fsharp">ClearFile</code></pre></td>
@@ -432,7 +446,7 @@ in fun outer2 -> {
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>
-    hljs.highlightAll();
+    //hljs.highlightAll();
   </script>
   </body>
 </html>
