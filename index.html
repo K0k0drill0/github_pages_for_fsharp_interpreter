@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+  
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 6px;
+    }
+
+    code {
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Документация к языку программирования AntON</h1>
+
+  <h2>Введение</h2>
+  <p>
+    Язык программирования AntON является функциональным и реализует следующие механизмы и инструменты:
+    <ul>
+      <li>Ленивые лямбда-функции</li>
+      <li>Псевдонимы/замены выражений (let): ленивые, энергичные и рекурсивные</li>
+      <li>Замыкание</li>
+      <li>Условный оператор</li>
+      <li>Обработка математических выражений в инфиксной нотации</li>
+      <li>Примитивные типы: Void, Int, Float, Bool, Char, String</li>
+      <li>Списочный тип List</li>
+      <li>Файловый тип File</li>
+      <li>Библиотека обработки строк</li>
+      <li>Библиотека обработки списков</li>
+      <li>Библиотека ввода-вывода</li>
+      <li>Библиотека приведения типов</li>
+      <li>Вывод синтаксических ошибок и ошибок времени выполнения (Не закончен)</li>
+    </ul>
+    Этот документ предоставляет исчерпывающую документацию по данному функционалу.
+  </p>
+
+  <h2>Установка</h2>
+  <ol>
+    <li>Установите .NET</li>
+    <li>Скачайте исходные файлы antON</li>
+    <li>
+      Откройте в терминале директорию .NET проекта antON и соберите его, выполнив команду
+      <pre><code data-language="bash">dotnet build -c release</code></pre>
+    </li>
+    <li>Собранный интерпретатор будет находиться в папке bin в виде испольняемого файла anton</li>
+    <li>
+      Для выполнения программы запустите из терминала исполняемый файл anton, передав ему в качестве аргумента путь к интерпретируемому файлу
+      <pre><code data-language="bash">./anton &lt;path&gt;</code></pre>
+    </li>
+  </ol>
+
+  <h2>Синтаксис языка</h2>
+  <p>
+    AntON функциональный язык, написанный людьми, вдохновившимися F#. AntON построен на основе аппликаций и абстракций. 
+  </p>
+
+  <h3>Типы данных</h3>
+  <p>
+    Интерпретатор реализует динамическую типизацию, поддерживая при этом следующие типы данных:
+  </p>
+  <ul>
+    <li>Пустой тип (Void)</li>
+    <li>Целочисленный (Int)</li>
+    <li>Вещественный (Float)</li>
+    <li>Логический (Bool)</li>
+    <li>Символьный (Char)</li>
+    <li>Строковый (String)</li>
+    <li>Списочный (List)</li>
+    <li>Файловый (File)</li>
+  </ul>
+
+  <h3>Математическое выражение</h3>
+  <p>
+    Математические выражения могут содержать константы всех типов (кроме void),
+    операции над ними, лямбда-функции, псевдонимы других выражений, а также вызовы
+    библиотечных функций. В математических выражениях не предусмотрено неявное приведение типов.
+  </p>
+
+  <h3>
+    Математические операции
+  </h3>
+  <ul>
+    <li>; (отсечение, пример: a; b = b)</li>
+    <li>+ (сложение целых или вещественных чисел, конкатенация строк)</li>
+    <li>- (вычитание целых или вещественных чисел)</li>
+    <li>* (умножение целых или вещественных чисел)</li>
+    <li>/ (деление целых или вещественных чисел)</li>
+    <li>=, <, >, <=, >= (операции сравнения)</li>
+    <li>@ (конкатенация списков)</li>
+    <li>: (получение внутреннего поля переменной или библиотеки)</li>
+  </ul>
+
+  <h3>Лямбда-функции</h3>
+  <p>
+    Ключевое слово fun позволяет задать лямбда-функцию, которая принимает на вход
+    один аргумент и вычисляет по нему заданное выражение. При этом вычисления работают лениво,
+    т.е. аргумент вычисляется только тогда, когда он используется
+  </p>
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">fun /имя переменной/ -> { /выражение/ }</code></pre>
+
+  <p>Пример:</p>
+  <pre><code data-language="fsharp">fun x -> { x * 2 } </code></pre>
+
+  <p>
+    Для аппликации лямбда-функции с некоторым аргументом нужно обернуть аргумент в круглые скобки и записать его после лямбда-функции.
+  </p>
+  <pre><code data-language="fsharp">fun x -> { x * 2 } (1)</code></pre>
+
+  <p>Результатом выражения будет 2.</p>
+
+<h3>Условный оператор</h3>
+  <p>Условный оператор позволяет выполнить одно из двух выражений в зависимости от значения переданного в него логического выражения.</p>
+
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">if /логическое выражение/ then /выражение при истине/ else /выражение при лжи/</code></pre>
+
+  <p>Примечание: обе ветки обязательны.</p>
+  
+  <p>Пример:</p>
+  <pre><code data-language="fsharp">if 2*2 = 5 then "apple" else "pear"</code></pre>
+  <p>Результат выражения - "pear".</p>
+
+  <h3>Замена</h3>
+
+  <p>
+    Ключевое слово let позволяет заменить некоторое выражение псевдонимом и использовать его в другом выражении.
+    Вычисление замены ленивое.
+  </p>
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">let /псевдоним/ = /заменяемое выражение/ in /выражение, где может быть использована замена/</code></pre>
+  
+  <p>Пример:</p>
+  <pre><code data-language="fsharp">let value = 5 in value * value</code></pre>
+  <p>Результат выражения - 25.</p>
+  
+  <pre><code data-language="fsharp">
+let func =
+    fun x -> {
+        2*x
+    }
+in func (5)
+  </code></pre>
+  <p>Результат выражения - 10.</p>
+  
+  <h3>Энергичная замена</h3>
+
+  <p>
+    Ключевое слово letact представляет собой энергичный аналог обычной замены let.
+  </p>
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">letact /псевдоним/ = /заменяемое выражение/ in /выражение, где может быть использована замена/</code></pre>
+  
+  <p>Пример:</p>
+  
+  <pre><code data-language="fsharp">
+let x = IO:ReadConsoleLine in x + x
+  </code></pre>
+  <p>
+    Данный код потребует от пользователя двух вводов, т.к. вычисление функции чтения с терминала будет
+    вычисляться для каждого вхождения псевдонима в правое выражение.
+  </p>
+  <pre><code data-language="fsharp">
+letact x = IO:ReadConsoleLine in x + x
+  </code></pre>
+  <p>Энергичная же замена потребует только одного ввода с терминала ещё до начала вычисления правого выражения.</p>
+  
+  <h3>Рекурсивные замены</h3>
+  <p>
+    Ключевое слово letrec, как и ключевое слово let позволяет объявить ленивую замену. Отличие заключается в том,
+    что созданную замену можно также использовать и в самом заменяемом выражении.
+  </p>
+  <p>Синтаксис:</p>
+  <pre><code data-language="fsharp">letrec /псевдоним/ = /заменяемое выражение/ in /выражение/</code></pre>
+
+  <p>Пример:</p>
+  <pre><code data-language="fsharp">
+// factorial calculation
+letrec fact =
+    fun n -> {
+        if n = 0
+            then 1
+            else n * fact (n-1)
+    }
+in fact (5)
+  </code></pre></pre>
+  <p>Результат выражения - 120.</p>
+  
+  <h3>Замыкание</h3>
+  <p>
+    Замыкание &mdash; механизм, позволяющий внутри лямбда-функции использовать внешние переменные.
+  </p>
+
+  <p>Пример:</p>
+  <pre><code data-language="fsharp">
+let outer1 = 5
+in fun outer2 -> {
+    fun x -> {
+        outer1 * outer2 * x
+    }
+} (2) (3)
+  </code></pre></pre>
+  <p>Результат выражения - 30.</p>
+  
+  <h3>Библиотеки</h3>
+  <ul>
+    <li>
+      <p>String</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Функция</th>
+            <th>Тип</th>
+            <th>Описание</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><pre><code data-language="fsharp">Length</code></pre></td>
+            <td><pre><code data-language="fsharp">String -> Int</code></pre></pre></td>
+            <td>Длина строки.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ToList</code></pre></td>
+            <td><pre><code data-language="fsharp">String -> List</char><char></code></pre></td>
+            <td>Конвертация строки в список символов.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">At</code></pre></td>
+            <td><pre><code data-language="fsharp">String, Int -> Char </code></pre></td>
+            <td>Символ на заданной позиции строки.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">Split</code></pre></td>
+            <td><pre><code data-language="fsharp">String, Char -> List<string></code></pre></td>
+            <td>Разбиение строки по символу.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">Concat</code></pre></td>
+            <td><pre><code data-language="fsharp">String, String -> String</code></pre></td>
+            <td>Конкатенация строк (+).</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">Replace</code></pre></td>
+            <td><pre><code data-language="fsharp">String, Char(n1), Char(n2) -> String</code></pre></td>
+            <td>Замена всех вхождений символа n1 на символ n2.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">Replace</code></pre></td>
+            <td><pre><code data-language="fsharp">String, String(n1), String(n2) -> String</code></pre></td>
+            <td>Замена всех вхождений строки n1 на строку n2.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">Substring</code></pre></td>
+            <td><pre><code data-language="fsharp">String, Int(pos), Int(cnt) -> String</code></pre></td>
+            <td>Получение подстроки длиной cnt, начиная с символа на позиции
+                 pos.<br>Если cnt равен -1, то до конца строки.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Примеры использования методов строк:</p>
+      <pre><code data-language="fsharp">String:Length ("some_string")</code></pre>
+      <p>Функция вернёт целое число 11.</p>
+    </li>
+    
+    <li>
+      <p>List</p>
+        <table>
+            <thead>
+              <tr>
+                  <th>Функция</th>
+                  <th>Тип</th>
+                  <th>Описание</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><pre><code data-language="fsharp">Head</code></pre></td>
+                    <td><pre><code data-language="fsharp">List -> T</code></pre></td>
+                    <td>Голова списка.</td>
+                </tr>
+                <tr>
+                    <td><pre><code data-language="fsharp">Tail</code></pre></td>
+                    <td><pre><code data-language="fsharp">List -> List</code></pre></td>
+                    <td>Хвост списка.</td>
+                </tr>
+            </tbody>
+        </table>
+      <p>Примеры использования методов строк:</p>
+      <pre><code data-language="fsharp">List:Head ([1; 2; 3])</code></pre>
+      <p>Функция вернет 1, значение, которое соответствует голове списка, то
+            есть первому значению.</p>
+    </li>
+    
+    <li>
+      <p>IO</p>
+      <table>
+        <thead>
+          <tr>
+              <th>Функция</th>
+              <th>Тип</th>
+              <th>Описание</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><pre><code data-language="fsharp">ReadConsoleLine</code></pre></td>
+            <td><pre><code data-language="fsharp">Void -> String</code></pre></td>
+            <td>Считывает строку из консоли.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">WriteConsole</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path), String(msg)</code></pre></td>
+            <td>Вывод в консоль.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">OpenReadFile</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path) -> File</code></pre></td>
+            <td>Открыть файл для чтения.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">CloseReadFile</code></pre></td>
+            <td><pre><code data-language="fsharp">File -> Void</code></pre></td>
+            <td>Закрыть файл, открытый на чтение.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ReadFileLine</code></pre></td>
+            <td><pre><code data-language="fsharp">File -> String</code></pre></td>
+            <td>Прочитать строку файла.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ClearFile</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path) -> Void</code></pre></td>
+            <td>Очистить файл.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">WriteFile</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path), String(msg) -> Void</code></pre></td>
+            <td>Записать в файл.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">AppendFile</code></pre></td>
+            <td><pre><code data-language="fsharp">String(path), String(msg) -> Void</code></pre></td>
+            <td>Записать в конец файла.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Пример использования:</p>
+      <pre><code data-language="fsharp">IO:ReadConsoleLine</code></pre>
+      <p>Функция вернёт строку, которую пользователь введет в консоль.</p>
+    </li>
+    
+    <li>
+      <p>Cast</p>
+      <table>
+        <thead>
+          <tr>
+              <th>Функция</th>
+              <th>Тип</th>
+              <th>Описание</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><pre><code data-language="fsharp">ToInt</code></pre></td>
+            <td><pre><code data-language="fsharp">T -> Int</code></pre></td>
+            <td>Приводит типы Int, Float, Char, String к типу Int.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ToFloat</code></pre></td>
+            <td><pre><code data-language="fsharp">T -> Float</code></pre></td>
+            <td>Приводит типы Int, Float, Char, String к типу Float.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ToBool</code></pre></td>
+            <td><pre><code data-language="fsharp">T -> Bool</code></pre></td>
+            <td>Приводит тип Int к типу Bool.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ToChar</code></pre></td>
+            <td><pre><code data-language="fsharp">T -> Char</code></pre></td>
+            <td>Приводит типы Int, Char к типу Char.</td>
+          </tr>
+          <tr>
+            <td><pre><code data-language="fsharp">ToString</code></pre></td>
+            <td><pre><code data-language="fsharp">T -> String</code></pre></td>
+            <td>Приводит типы Int, Float, Bool, Char, String к типу String.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Пример использования:</p>
+      <pre><code data-language="fsharp">Cast.ToFloat ("123.456")</code></pre>
+      <p>Функция вернёт вещественное число 123.456.</p>
+    </li>
+  </ul>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  </body>
+</html>
